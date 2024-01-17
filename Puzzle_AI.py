@@ -6,10 +6,11 @@ class PUZZLE_SOlVER:
     # [0, 1, 2], [3, 4, 5], [6, 7, 8]
     # [1, 2, 3], [4, 5, 6], [7, 8, 0]
 
-    # easy check1 [1, 2, 3], [0, 4, 6], [7, 5, 8]
-    # hard check2 [0, 1, 2], [3, 4, 5], [6, 7, 8]
+    # [1, 2, 3], [0, 4, 6], [7, 5, 8]
+    # [0, 1, 2], [3, 4, 5], [6, 7, 8]
+    # [1, 2, 3], [4, 5, 6], [7, 8, 0]
     def __init__(self, start_state):
-        self.GOAL_STATE = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
+        self.GOAL_STATE = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
         self.count = 0
         self.start_time = time.time()
         self.start_state = np.asarray(start_state)
@@ -77,8 +78,11 @@ class PUZZLE_SOlVER:
         h_mis_tiles = []
         for action in legal_actions:
             successor_state, mis_tiles = self.transition_function(state, action)
-            successor_states.append(successor_state)
-            h_mis_tiles.append(mis_tiles)
+
+            if not self.check(successor_state):
+                successor_states.append(successor_state)
+                h_mis_tiles.append(mis_tiles)
+
         values = list(zip(h_mis_tiles, successor_states))
         values = sorted(values, key=lambda x: x[0])
         successor_states = [value[1] for value in values]

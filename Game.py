@@ -17,7 +17,7 @@ MARGIN = SQUARE_SIZE  # Margin size
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Set up the puzzle state
-start_state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+start_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
 
 
 def draw_window(state, message):
@@ -60,7 +60,7 @@ def main():
         solution_set = solver.get_solution()
 
         for state in solution_set:
-            time.sleep(0.05)
+            time.sleep(0.005)
             draw_window(state, "Working it out")
 
         draw_window(solver.GOAL_STATE, f"Done. The puzzle has been solved in {solver.count} steps.")
