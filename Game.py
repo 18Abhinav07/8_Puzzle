@@ -21,24 +21,31 @@ start_state = np.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
 
 
 def draw_window(state, message):
-    WIN.fill((255, 255, 255))
+    TURQ = (0, 230, 230)
+    RED = (255, 0, 0)
+    BLUE = (0, 0, 255)
+    BLACK = (0, 0, 0)
+    WIN.fill(BLACK)
 
-    # Draw the grid
+    import pygame.freetype  # Import the freetype module.
+
+    GAME_FONT = pygame.freetype.Font(None, 30)
+
     for i in range(ROWS):
         for j in range(COLS):
-            pygame.draw.rect(WIN, (0, 0, 0),
+            # Change the color of the rectangles.
+            pygame.draw.rect(WIN, RED if (i + j) % 2 == 0 else BLUE,
                              (MARGIN + j * SQUARE_SIZE, MARGIN + i * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 1)
 
-            # Draw the numbers
-            font = pygame.font.Font(None, 36)
-            text = font.render(str(state[i][j]), 1, (0, 0, 0))
-            WIN.blit(text, (MARGIN + j * SQUARE_SIZE + SQUARE_SIZE // 2 - text.get_width() // 2,
-                            MARGIN + i * SQUARE_SIZE + SQUARE_SIZE // 2 - text.get_height() // 2))
+            # Draw the numbers in a different color.
+            text_surface, rect = GAME_FONT.render(str(state[i][j]), TURQ)
+            WIN.blit(text_surface, (MARGIN + j * SQUARE_SIZE + SQUARE_SIZE // 2 - rect.width // 2,
+                                    MARGIN + i * SQUARE_SIZE + SQUARE_SIZE // 2 - rect.height // 2))
 
-    # Draw the message
-    font = pygame.font.Font(None, 24)
-    text = font.render(message, 1, (0, 0, 0))
-    WIN.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT - MARGIN // 2 - text.get_height() // 2))
+    # Draw the message in a different color and font.
+    MESSAGE_FONT = pygame.freetype.Font(None, 18)
+    text_surface, rect = MESSAGE_FONT.render(message, TURQ)
+    WIN.blit(text_surface, (WIDTH // 2 - rect.width // 2, HEIGHT - MARGIN // 2 - rect.height // 2))
 
     pygame.display.update()
 
