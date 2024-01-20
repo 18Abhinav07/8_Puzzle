@@ -17,11 +17,7 @@ class PUZZLE_SOlVER:
         self.explored_state = []
         self.unsolvable = []
         self.solution_set = []
-        if self.isSolvable(self.start_state):
-            if not self.start_analysis(self.start_state):
-                print("No solution found")
-        else:
-            print("Start state is not solvable")
+
 
     def goal_test(self, test_state):
         # check matching the goal state

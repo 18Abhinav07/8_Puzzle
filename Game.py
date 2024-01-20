@@ -17,7 +17,7 @@ MARGIN = SQUARE_SIZE  # Margin size
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Set up the puzzle state
-start_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+start_state = np.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
 
 
 def draw_window(state, message):
@@ -47,25 +47,39 @@ def main():
     clock = pygame.time.Clock()
     run = True
     message = "Welcome to 8 Puzzle!"
+    draw_window(start_state, message)
+    time.sleep(2)
+    solver = PUZZLE_SOlVER(start_state)
 
-    while run:
-        clock.tick(60)
-        solver = PUZZLE_SOlVER(start_state)
-        draw_window(start_state, "The solver has found a way")
+    if solver.isSolvable(start_state):
+        if solver.start_analysis(start_state):
+            while run:
+                clock.tick(60)
 
-        for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                draw_window(start_state, "The solver has found a way")
+                time.sleep(2)
+                draw_window(start_state, "The solver is starting the implementation.")
+                time.sleep(2)
+
+                for event in pygame.event.get():
+                    if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                        run = False
+
+                solution_set = solver.get_solution()
+
+                for state in solution_set:
+                    time.sleep(0.005)
+                    draw_window(state, "Working it out")
+
+                draw_window(solver.GOAL_STATE, f"Done. The puzzle has been solved.")
+                time.sleep(2.0)
                 run = False
-
-        solution_set = solver.get_solution()
-
-        for state in solution_set:
-            time.sleep(0.005)
-            draw_window(state, "Working it out")
-
-        draw_window(solver.GOAL_STATE, f"Done. The puzzle has been solved in {solver.count} steps.")
-        time.sleep(2.0)
-        run = False
+        else:
+            draw_window(start_state, "Not solvable")
+            time.sleep(2)
+    else:
+        draw_window(start_state, "Not solvable")
+        time.sleep(2)
     pygame.quit()
 
 
